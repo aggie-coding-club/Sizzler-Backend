@@ -3,7 +3,6 @@ var router = express.Router();
 var supabase = require("../supabase");
 
 router.get("/", async function (req, res, next) {
-  console.log("hi_andrew");
     try {
       // Query the "posts" table
       const { data, error } = await supabase
