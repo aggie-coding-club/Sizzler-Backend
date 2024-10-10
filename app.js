@@ -1,12 +1,3 @@
-  // import { createClient } from '@supabase/supabase-js'
-  // import dotenv from 'dotenv';
-  // dotenv.config();
-  // const supabaseUrl = 'https://fdbqtdftqqslqatesqlu.supabase.co'
-  // const supabaseKey = process.env.SUPABASE_KEY
-  // console.log(supabaseKey);
-  // export const supabase = createClient(supabaseUrl, supabaseKey)
-
-
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -32,9 +23,6 @@ const port = 3000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-// app.get('/posts', async (req, res) => {
-// });
 
 module.exports = app;
 
