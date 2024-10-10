@@ -1,3 +1,11 @@
+const dotenv = require("dotenv");
+dotenv.config();
+const { createClient } = require("@supabase/supabase-js");
+const supabaseUrl = "https://fdbqtdftqqslqatesqlu.supabase.co/";
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+module.exports = { supabase };
+
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
