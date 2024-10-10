@@ -30,4 +30,11 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
+app.get('/posts', async (req, res) => {
+  const { data, error } = await supabase.from("posts").select("*");
+  console.log("Posts: ", data);
+
+  res.json(data);
+})
+
 module.exports = app;
