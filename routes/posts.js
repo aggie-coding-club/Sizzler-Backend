@@ -1,16 +1,18 @@
-var supabase = require("../app");
-
 var express = require("express");
 var router = express.Router();
+var supabase = require("../supabase");
 
-router.get("/posts/", async function (req, res, next) {
-  app.get('/posts', async (req, res) => {
+router.get("/", async function (req, res, next) {
+  console.log("hi_andrew");
     try {
       // Query the "posts" table
       const { data, error } = await supabase
         .from('posts')
         .select('*');
-  
+      
+      // let { data: posts, error } = await supabase
+      //   .from('posts')
+      //   .select('id');
       // Handle errors
       if (error) {
         console.error('Error fetching posts:', error);
@@ -26,7 +28,7 @@ router.get("/posts/", async function (req, res, next) {
       console.error('Error in fetching posts:', err);
       res.status(500).send('Server error');
     }
-  });
+  
 
 });
   
