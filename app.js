@@ -33,21 +33,36 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/posts", postsRouter);
+//app.use("/posts", postsRouter);
 
 const port = 3000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-// app.get('/posts', async (req, res) => {
+app.get('/posts', async (req, res) => {
+  try {
+    // Query the "posts" table
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*');
 
-// });
+    // Handle errors
+    if (error) {
+      console.error('Error fetching posts:', error);
+      return res.status(500).send('Error fetching posts');
+    }
+
+    // Console log all posts
+    console.log('Posts:', data);
+
+    // Send the posts as a response
+    res.json(data);
+  } catch (err) {
+    console.error('Error in fetching posts:', err);
+    res.status(500).send('Server error');
+  }
+});
 
 module.exports = app;
 
-// app._router.stack.forEach(function(r) {
-//   if (r.route && r.route.path) {
-//     console.log(r.route.path);
-//   }
-// });
