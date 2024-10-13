@@ -13,6 +13,7 @@ var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var postsRouter = require("./routes/posts");
 
 var app = express();
 
@@ -24,17 +25,11 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/posts", postsRouter);
 
 const port = 3000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-app.get('/posts', async (req, res) => {
-  const { data, error } = await supabase.from("posts").select("*");
-  console.log("Posts: ", data);
-
-  res.json(data);
-})
 
 module.exports = app;
