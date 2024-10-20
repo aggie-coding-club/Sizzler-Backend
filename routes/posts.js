@@ -85,7 +85,46 @@ router.get("/create/:userID/:title/:caption/", async function (req, res, next) {
 
 
 // update
+router.get("/update/:ID/", async function (req, res, next){
+  try {
+    const { title, caption } = req.query; // added this so that you can change just the caption, just the title or change both
 
+    if (title && caption) {
+      const { data, error } = await supabase
+        .from('posts')
+        .update({'title': title, 'caption': caption})
+        .eq('id', req.params['ID'])
+        .select()
+      res.json(data);
+    } else if (title){
+      const { data, error } = await supabase
+        .from('posts')
+        .update({'title': title})
+        .eq('id', req.params['ID'])
+        .select()
+      res.json(data);
+
+    } else if (caption) {
+      const { data, error } = await supabase
+        .from('posts')
+        .update({'caption':caption})
+        .eq('id', req.params['ID'])
+        .select()
+      res.json(data);
+    } else{
+      if (error){
+        console.error('Error updating posts:', error);
+        return res.status(500).send('Error updating posts')
+      } else{
+        console.error("Something went wrong.")
+        return res.status(500).send('Error updating posts')
+      }
+    }
+  } catch (err){
+      console.error('Error in creating posts:', err);
+      res.status(500).send('Server error')
+  }
+})
 // delete
 router.get("/delete/:ID/", async function (req, res, next){
   try {
