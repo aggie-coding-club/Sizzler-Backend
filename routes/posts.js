@@ -72,13 +72,13 @@ router.get("/create/:userID/:title/:caption/", async function (req, res, next) {
     
     console.log("Success")
     if (error) {
-      console.error('Error fetching posts:', error);
-      return res.status(500).send('Error fetching posts');
+      console.error('Error creating posts:', error);
+      return res.status(500).send('Error creating posts');
     }
 
     res.json(data);
   } catch (err){
-    console.error('Error in fetching posts:', err);
+    console.error('Error in creating posts:', err);
     res.status(500).send('Server error');
   }
 });
@@ -87,4 +87,23 @@ router.get("/create/:userID/:title/:caption/", async function (req, res, next) {
 // update
 
 // delete
+router.get("/delete/:ID/", async function (req, res, next){
+  try {
+    
+    const { data, error } = await supabase
+    .from('posts')
+    .delete()
+    .eq('id', req.params['ID'])
+
+    if (error){
+      console.error('Error deleting posts:', error);
+      return res.status(500).send('Error deleting posts');
+    }
+
+    res.json(data);
+  } catch (err){
+    console.error('Error in deleting posts:', err);
+    res.status(500).send('Server error')
+  }
+})
 module.exports = router;
