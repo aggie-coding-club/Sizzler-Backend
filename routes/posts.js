@@ -4,7 +4,7 @@ var supabase = require("../supabase");
 
 
 
-// read 
+// Read
 router.get("/read/", async function (req, res, next) {
     try {
       // Query the "posts" table
@@ -32,7 +32,69 @@ router.get("/read/", async function (req, res, next) {
     }
 });
 
-// create
+// Read by Post ID
+router.get("/read/post/:post_id", async function (req, res, next) {
+    try {
+      const post_id = req.params.post_id;
+
+      // Query the "posts" table
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('id', post_id);
+      
+      // let { data: posts, error } = await supabase
+      //   .from('posts')
+      //   .select('id');
+      // Handle errors
+      if (error) {
+        console.error('Error fetching posts:', error);
+        return res.status(500).send('Error fetching posts');
+      }
+  
+      // Console log all posts
+      console.log('Posts:', data);
+
+      // Send the posts as a response
+      res.json(data);
+    } catch (err) {
+      console.error('Error in fetching posts:', err);
+      res.status(500).send('Server error');
+    }
+});
+
+// Read by User ID
+router.get("/read/user/:user_id", async function (req, res, next) {
+    try {
+      const user_id = req.params.user_id;
+
+      // Query the "posts" table
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('user_id', user_id);
+      
+      // let { data: posts, error } = await supabase
+      //   .from('posts')
+      //   .select('id');
+      // Handle errors
+      if (error) {
+        console.error('Error fetching posts:', error);
+        return res.status(500).send('Error fetching posts');
+      }
+  
+      // Console log all posts
+      console.log('Posts:', data);
+
+      // Send the posts as a response
+      res.json(data);
+    } catch (err) {
+      console.error('Error in fetching posts:', err);
+      res.status(500).send('Server error');
+    }
+});
+
+// Create
 router.post("/create/", async function (req, res, next) {
   try {
     // create
@@ -60,7 +122,7 @@ router.post("/create/", async function (req, res, next) {
 });
 
 
-// update
+// Update
 router.put("/update/", async function (req, res, next){
   try {
     const { title, caption, media, postID } = req.body; 
@@ -80,7 +142,8 @@ router.put("/update/", async function (req, res, next){
       res.status(500).send('Server error')
   }
 })
-// delete
+
+// Delete
 router.delete("/delete/", async function (req, res, next){
   try {
     const {postID} = req.body;
@@ -100,4 +163,5 @@ router.delete("/delete/", async function (req, res, next){
     res.status(500).send('Server error')
   }
 })
+
 module.exports = router;
