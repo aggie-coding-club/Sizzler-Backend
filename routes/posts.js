@@ -55,19 +55,19 @@ router.get("/read", async function (req, res, next) {
 });
 
 // create
-router.get("/create/:userID/:title/:caption/", async function (req, res, next) {
+router.post("/create/", async function (req, res, next) {
   try {
     // create
-    let title_with_spaces = req.params["title"].replace(/-/g, ' '); // intending for the title to use dashes instead of spaces, but this doesn't allow you to include dashes in the actual text.
-    let caption_with_spaces = req.params["caption"].replace(/-/g, ' ');
+    const {userID, title, caption, media} = req.body;
 
     const { data, error } = await supabase
       .from('posts')
       .insert([{id : crypto.randomUUID(), // copilot ai'ed this but it seems to work
       created_at : getFormattedTimestamp(), // also copilot ai'ed this, this function (which is above) converts a javascript Date() object to a timestamptz object
-      user_id : req.params["userID"],
-      title : title_with_spaces,
-      caption : caption_with_spaces}])
+      user_id : userID,
+      title : title,
+      caption : caption,
+      media_links: media}])
       .select()
     
     console.log("Success")
@@ -85,22 +85,22 @@ router.get("/create/:userID/:title/:caption/", async function (req, res, next) {
 
 
 // update
-router.get("/update/:ID/", async function (req, res, next){
+router.put("/update/", async function (req, res, next){
   try {
-    const { title, caption } = req.query; // added this so that you can change just the caption, just the title or change both
+    const { title, caption, postID } = req.body; // added this so that you can change just the caption, just the title or change both
 
     if (title && caption) {
       const { data, error } = await supabase
         .from('posts')
         .update({'title': title, 'caption': caption})
-        .eq('id', req.params['ID'])
+        .eq('id', postID)
         .select()
       res.json(data);
     } else if (title){
       const { data, error } = await supabase
         .from('posts')
         .update({'title': title})
-        .eq('id', req.params['ID'])
+        .eq('id', postID)
         .select()
       res.json(data);
 
@@ -108,7 +108,7 @@ router.get("/update/:ID/", async function (req, res, next){
       const { data, error } = await supabase
         .from('posts')
         .update({'caption':caption})
-        .eq('id', req.params['ID'])
+        .eq('id', postID)
         .select()
       res.json(data);
     } else{
@@ -126,13 +126,13 @@ router.get("/update/:ID/", async function (req, res, next){
   }
 })
 // delete
-router.get("/delete/:ID/", async function (req, res, next){
+router.delete("/delete/", async function (req, res, next){
   try {
-    
+    const {postID} = req.body;
     const { data, error } = await supabase
     .from('posts')
     .delete()
-    .eq('id', req.params['ID'])
+    .eq('id', postID)
 
     if (error){
       console.error('Error deleting posts:', error);
