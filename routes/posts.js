@@ -2,8 +2,6 @@ var express = require("express");
 var router = express.Router();
 var supabase = require("../supabase");
 
-
-
 // Read
 router.get("/read/", async function (req, res, next) {
     try {
