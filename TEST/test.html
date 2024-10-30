@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Function Example</title>
+</head>
+
+<body>
+    <h1 id="title">Dont click me</h1>
+    <button onclick="changeText()">Click Me</button>
+
+    <script>
+        // JavaScript function to change the text of the <h1> element
+        function changeText() {
+            var title = document.getElementById("title");
+            title.innerHTML = "Your gay";
+        }
+    </script>
+</body>
+
+<body>
+    <h1 id="temp">Better not click me either</h1>
+    <button onclick="alert('Your gayer')">...</button>
+</body>
+
+</html>
