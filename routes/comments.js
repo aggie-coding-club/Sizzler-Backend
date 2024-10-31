@@ -56,7 +56,34 @@ router.get("/read/", async function (req, res, next) {
       res.status(500).send('Server error');
     }
 });
+// Read sorted by timestamp
+router.get("/readbytimestamp", async function (req, res, next) {
+  try {
+    // Query the "posts" table
+    const { data, error } = await supabase
+      .from('comments')
+      .select('*')
+      .order('created_at', { ascending: false});
+    // let { data: posts, error } = await supabase
+    //   .from('posts')
+    //   .select('id');
+    // Handle errors
+    if (error) {
+      console.error('Error fetching comments:', error);
+      return res.status(500).send('Error fetching comments');
+    }
 
+    // Console log all posts
+    //data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    console.log('Comments:', data);
+
+    // Send the posts as a response
+    res.json(data);
+  } catch (err) {
+    console.error('Error in fetching comments:', err);
+    res.status(500).send('Server error');
+  }
+});
 // Read by User ID
 router.get("/read/user/:user_id", async function (req, res, next) {
     try {
