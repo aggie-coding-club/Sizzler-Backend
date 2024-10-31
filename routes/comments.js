@@ -167,6 +167,24 @@ router.put("/update/", async function (req, res, next){
 })
 
 // Delete
+router.delete("/delete/", async function (req, res, next){
+  try {
+    const {commentID} = req.body;
+    const { data, error } = await supabase
+    .from('comments')
+    .delete()
+    .eq('id', commentID)
 
+    if (error){
+      console.error('Error deleting comments:', error);
+      return res.status(500).send('Error deleting comments');
+    }
+
+    res.json(data);
+  } catch (err){
+    console.error('Error in deleting comments:', err);
+    res.status(500).send('Server error')
+  }
+})
 
 module.exports = router;
