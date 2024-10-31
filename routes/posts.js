@@ -9,11 +9,7 @@ router.get("/read/", async function (req, res, next) {
       const { data, error } = await supabase
         .from('posts')
         .select('*'); 
-      
-      // let { data: posts, error } = await supabase
-      //   .from('posts')
-      //   .select('id');
-      // Handle errors
+
       if (error) {
         console.error('Error fetching posts:', error);
         return res.status(500).send('Error fetching posts');
@@ -41,10 +37,6 @@ router.get("/read/post/:post_id", async function (req, res, next) {
         .select('*')
         .eq('id', post_id);
       
-      // let { data: posts, error } = await supabase
-      //   .from('posts')
-      //   .select('id');
-      // Handle errors
       if (error) {
         console.error('Error fetching posts:', error);
         return res.status(500).send('Error fetching posts');
@@ -72,10 +64,6 @@ router.get("/read/user/:user_id", async function (req, res, next) {
         .select('*')
         .eq('user_id', user_id);
       
-      // let { data: posts, error } = await supabase
-      //   .from('posts')
-      //   .select('id');
-      // Handle errors
       if (error) {
         console.error('Error fetching posts:', error);
         return res.status(500).send('Error fetching posts');
