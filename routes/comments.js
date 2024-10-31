@@ -22,13 +22,13 @@ router.post("/create/", async function (req, res, next) {
     
     console.log("Success")
     if (error) {
-      console.error('Error creating posts:', error);
-      return res.status(500).send('Error creating posts');
+      console.error('Error creating comments:', error);
+      return res.status(500).send('Error creating comments');
     }
 
     res.json(data);
   } catch (err){
-    console.error('Error in creating posts:', err);
+    console.error('Error in creating comments:', err);
     res.status(500).send('Server error');
   }
 });
@@ -36,7 +36,7 @@ router.post("/create/", async function (req, res, next) {
 // Read all
 router.get("/read/", async function (req, res, next) {
     try {
-      // Query the "posts" table
+      // Query the "comments" table
       const { data, error } = await supabase
         .from('comments')
         .select('*');
@@ -46,10 +46,10 @@ router.get("/read/", async function (req, res, next) {
         return res.status(500).send('Error fetching comments');
       }
   
-      // Console log all posts
+      // Console log all comments
       console.log('Comments:', data);
 
-      // Send the posts as a response
+      // Send the comments as a response
       res.json(data);
     } catch (err) {
       console.error('Error in fetching comments:', err);
@@ -62,7 +62,7 @@ router.get("/read/user/:user_id", async function (req, res, next) {
     try {
       const user_id = req.params.user_id;
 
-      // Query the "posts" table
+      // Query the "comments" table
       const { data, error } = await supabase
         .from('comments')
         .select('*')
@@ -73,10 +73,10 @@ router.get("/read/user/:user_id", async function (req, res, next) {
         return res.status(500).send('Error fetching comments');
       }
   
-      // Console log all posts
+      // Console log all comments
       console.log('Comments:', data);
 
-      // Send the posts as a response
+      // Send the comments as a response
       res.json(data);
     } catch (err) {
       console.error('Error in fetching comments:', err);
@@ -89,7 +89,7 @@ router.get("/read/post/:post_id", async function (req, res, next) {
     try {
       const post_id = req.params.post_id;
 
-      // Query the "posts" table
+      // Query the "comments" table
       const { data, error } = await supabase
         .from('comments')
         .select('*')
@@ -100,10 +100,10 @@ router.get("/read/post/:post_id", async function (req, res, next) {
         return res.status(500).send('Error fetching comments');
       }
   
-      // Console log all posts
+      // Console log all comments
       console.log('Comments:', data);
 
-      // Send the posts as a response
+      // Send the comments as a response
       res.json(data);
     } catch (err) {
       console.error('Error in fetching comments:', err);
@@ -112,7 +112,32 @@ router.get("/read/post/:post_id", async function (req, res, next) {
 });
 
 // Update
-
+router.put("/update/", async function (req, res, next){
+  try {
+    const { title, caption, postID, userID, commentID } = req.body; 
+    const { data, error } = await supabase
+      .from('comments')
+      .update(
+        {
+          'user_id': userID, 
+          'post_id': postID,
+          'title': title, 
+          'caption': caption 
+        }
+      )
+      .eq('id', commentID)
+      .select()
+    
+    res.json(data);
+    if (error){
+      console.error('Error updating comments:', error);
+      return res.status(500).send('Error updating comments')
+    }
+  } catch (err){
+      console.error('Error in creating comments:', err);
+      res.status(500).send('Server error')
+  }
+})
 
 // Delete
 
