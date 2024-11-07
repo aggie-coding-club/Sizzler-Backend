@@ -24,6 +24,8 @@ router.get("/read/", async function (req, res, next) {
       res.status(500).send('Server error');
     }
 });
+
+
 // Read by timestamp
 router.get("/readbytimestamp", async function (req, res, next) {
   try {
