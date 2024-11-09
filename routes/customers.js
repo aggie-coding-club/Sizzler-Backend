@@ -26,7 +26,7 @@ router.get("/read/", async function (req, res, next) {
 });
 
 // Read by User ID
-router.get("/read/customer/:user_id", async function (req, res, next) {
+router.get("/read/:user_id", async function (req, res, next) {
   try {
     const user_id = req.params.user_id;
 
@@ -52,6 +52,35 @@ router.get("/read/customer/:user_id", async function (req, res, next) {
   }
 });
 
+// Read by First/Last Name
+router.get("/read/:FName/:LName", async function (req, res, next) {
+  try {
+    const FName = req.params.FName;
+    const LName = req.params.LName;
+
+    // Query the "posts" table
+    const { data, error } = await supabase
+      .from('customers')
+      .select('*')
+      .eq('first_name', FName)
+      .eq('last_name', LName);
+    
+    if (error) {
+      console.error('Error fetching customers:', error);
+      return res.status(500).send('Error fetching customers');
+    }
+
+    // Console log all posts
+    console.log('Customers:', data);
+
+    // Send the posts as a response
+    res.json(data);
+  } catch (err) {
+    console.error('Error in fetching customers:', err);
+    res.status(500).send('Server error');
+  }
+});
+
 // Create
 router.post("/create/", async function (req, res, next) {
   try {
@@ -60,7 +89,7 @@ router.post("/create/", async function (req, res, next) {
 
     const { data, error } = await supabase
       .from('customers') 
-      .insert([{user_id : userID,
+      .insert([{id : userID,
       first_name : FName,
       last_name : LName}])
       .select()
