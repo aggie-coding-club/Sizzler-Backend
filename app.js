@@ -15,7 +15,7 @@ const commentsRouter = require("./routes/comments");
 const app = express();
 
 const host = process.env.TAMU_WIFI_HOST;
-const EXPO_URL = `exp://${host}:${process.env.EXPO_GO_PORT}`;
+const EXPO_URL = `exp://${host}:${process.env.EXPO_PORT}`;
 
 const allowedOrigins = [process.env.EXPO_LOCALHOST_URL, EXPO_URL];
 
@@ -43,7 +43,7 @@ app.use("/comments", commentsRouter);
 
 const port = process.env.BACKEND_PORT;
 app.listen(port, host, () => {
-	console.log(`Sizzler backend listening on ${EXPO_URL}`);
+	console.info(`Sizzler backend listening on ${EXPO_URL}`);
 });
 
 module.exports = app;

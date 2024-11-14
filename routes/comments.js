@@ -18,7 +18,7 @@ router.get("/read/", async function (req, res, next) {
       }
   
       // Console log all posts
-      console.log('Comments:', data);
+      console.info("Comments:", data);
 
       // Send the posts as a response
       res.json(data);
