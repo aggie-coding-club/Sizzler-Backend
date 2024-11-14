@@ -11,7 +11,7 @@ router.get("/", async function (req, res, next) {
     // const { data, error } = await supabase
     //   .from('user_profiles')
     //   .select('*');
-    
+    console.log("try");
     let { data, error } = await supabase
       .from('user_profiles')
       .select('*');

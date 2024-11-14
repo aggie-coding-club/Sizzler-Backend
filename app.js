@@ -1,15 +1,36 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+require("dotenv").config();
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var postsRouter = require("./routes/posts")
-var commentsRouter = require("./routes/comments")
+const express = require("express");
 
-var app = express();
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const cors = require("cors");
+const path = require("path");
 
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+const postsRouter = require("./routes/posts");
+const commentsRouter = require("./routes/comments");
+
+const app = express();
+
+const allowedOrigins = [
+	process.env.LOCALHOST_URL,
+	process.env.SUPABASE_URL,
+	process.env.REACT_NATIVE_URL,
+];
+
+app.use(
+	cors({
+		origin: (origin, callback) => {
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error("Request made from unauthorized URL"));
+			}
+		},
+	})
+);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -23,8 +44,7 @@ app.use("/comments", commentsRouter);
 
 const port = 3000;
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+	console.log(`Example app listening on port ${port}`);
 });
 
 module.exports = app;
-
