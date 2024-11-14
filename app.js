@@ -14,11 +14,10 @@ const commentsRouter = require("./routes/comments");
 
 const app = express();
 
-const allowedOrigins = [
-	process.env.LOCALHOST_URL,
-	process.env.SUPABASE_URL,
-	process.env.REACT_NATIVE_URL,
-];
+const host = process.env.TAMU_WIFI_HOST;
+const EXPO_URL = `exp://${host}:${process.env.EXPO_GO_PORT}`;
+
+const allowedOrigins = [process.env.EXPO_LOCALHOST_URL, EXPO_URL];
 
 app.use(
 	cors({
@@ -42,9 +41,9 @@ app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter);
 
-const port = 3000;
-app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+const port = process.env.BACKEND_PORT;
+app.listen(port, host, () => {
+	console.log(`Sizzler backend listening on ${EXPO_URL}`);
 });
 
 module.exports = app;
