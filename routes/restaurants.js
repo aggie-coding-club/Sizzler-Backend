@@ -48,7 +48,6 @@ router.get("/read/:restaurantID", async function (req, res, next) {
 router.get("/readTagsByRestaurant/:restaurantID", async function (req, res, next) {
     try {
       const rID = req.params.restaurantID;
-      console.log(rID);
       const {data, error} = await supabase
         .rpc('tagsbyrestaurants', {restaurantid: rID});
       if (error){
@@ -65,6 +64,23 @@ router.get("/readTagsByRestaurant/:restaurantID", async function (req, res, next
 
 });
 
+// Get restaurants by tagsa
+router.get("/readRestaurantsByTag/:tagID", async function (req, res, next) {
+  try {
+    const tID = req.params.tagID;
+    const {data, error} = await supabase
+      .rpc('restaurantsbytag', {tagid: tID});
+    if (error){
+      console.error("Error in fetching restaurants:", error);
+      return res.status(500).send("Error fetching tags");
+    }
+    console.log(data);
+    res.json(data);
+  } catch (err){
+    console.error("Error in fetching restaurants:", err);
+    res.status(500).send("Server error");
+  }
+});
 
 // Read by Restaurant Name
 router.get("/read/name/:restaurantName", async function (req, res, next) {
@@ -146,6 +162,7 @@ router.put("/update/", async function (req, res, next){
 router.delete("/delete/", async function (req, res, next){
     try {
       const {userID} = req.body;
+
       const { data, error } = await supabase
         .from('restaurants')
         .delete()
