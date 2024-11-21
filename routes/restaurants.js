@@ -44,6 +44,28 @@ router.get("/read/:restaurantID", async function (req, res, next) {
 
 });
 
+// Get tags by Restaurants
+router.get("/readTagsByRestaurant/:restaurantID", async function (req, res, next) {
+    try {
+      const rID = req.params.restaurantID;
+      console.log(rID);
+      const {data, error} = await supabase
+        .rpc('tagsbyrestaurants', {restaurantid: rID});
+      if (error){
+        console.error("Error in fetching tags:", error);
+        return res.status(500).send("Error fetching tags");
+      }
+      console.log(data);
+      res.json(data);
+
+    } catch (err){
+      console.error("Error in fetching tags:", err);
+      res.status(500).send("Server error");
+    }
+
+});
+
+
 // Read by Restaurant Name
 router.get("/read/name/:restaurantName", async function (req, res, next) {
     try {
