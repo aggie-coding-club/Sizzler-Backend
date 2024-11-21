@@ -30,5 +30,34 @@ router.get("/", async function (req, res, next) {
   
 
 });
+
+router.get("/id", async function (req, res, next) {
+  try {
+    // Query the "posts" table
+    const { data, error } = await supabase
+      .from('posts')
+      .select('id');
+    
+    // let { data: posts, error } = await supabase
+    //   .from('posts')
+    //   .select('id');
+    // Handle errors
+    if (error) {
+      console.error('Error fetching posts id:', error);
+      return res.status(500).send('Error fetching posts id');
+    }
+
+    // Console log all posts
+    console.log('Posts:', data);
+
+    // Send the posts as a response
+    res.json(data);
+  } catch (err) {
+    console.error('Error in fetching posts id:', err);
+    res.status(500).send('Server error');
+  }
+
+
+});
   
 module.exports = router;
