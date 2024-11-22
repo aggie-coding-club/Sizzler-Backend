@@ -42,8 +42,9 @@ app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter);
 
 const port = process.env.BACKEND_PORT;
+const BACKEND_URL = `http://${host}:${port}`;
 app.listen(port, host, () => {
-	console.info(`Sizzler backend listening on ${EXPO_URL}`);
+	console.info(`Sizzler backend listening on ${BACKEND_URL}`);
 });
 
 module.exports = app;
