@@ -14,7 +14,7 @@ const commentsRouter = require("./routes/comments");
 
 const app = express();
 
-const host = process.env.TAMU_WIFI_HOST;
+const host = process.env.WIFI_HOST || process.env.LOCAL_HOST;
 const EXPO_URL = `exp://${host}:${process.env.EXPO_PORT}`;
 
 const allowedOrigins = [process.env.EXPO_LOCALHOST_URL, EXPO_URL];
