@@ -32,4 +32,95 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+router.post("/create/", async function (req, res, next) {
+  try {
+    // create
+    const {accountType, email, firstName, lastName, username, resName, street, city, state} = req.body;
+    // USE SUPABASE SIGN UP API TO CREATE AN AUTH.USER THEN CREATE A USER PROFILE
+
+    const { data, error } = await supabase
+      .from('user_profiles') 
+      .insert([{user_type: accountType,
+              email: email}])
+      .select();
+    /*
+    const { d , e } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('email', email)
+      .order('created_at', {ascending: false});
+
+    console.log(d)
+    const consumer = {
+      userID: d[0].id,
+      FName: firstName,
+      LName: lastName,
+      UName: username
+    };
+    console.log(d);
+    const restaurant = {
+      userID: d[0].id,
+      restaurantName: resName,
+      streetAddress: street,
+      City: city,
+      State: state
+    };
+    if (accountType === "customer"){
+      fetch("http://localhost:3000/customers/create", {
+        method: "POST", // HTTP method
+        headers: {
+            "Content-Type": "application/json" // Inform the backend of the data format
+        },
+        body: JSON.stringify(consumer) // Convert JavaScript object to JSON
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(HTTP);
+            }
+            return response.json(); // Parse JSON response
+        })
+        .then(result => {
+            console.log("Success:", result); // Handle the response data
+        })
+        .catch(error => {
+            console.error("Error:", error); // Handle errors
+        });
+    } else {
+      fetch("http://localhost:3000/restaurants/create", {
+        method: "POST", // HTTP method
+        headers: {
+            "Content-Type": "application/json" // Inform the backend of the data format
+        },
+        body: JSON.stringify(restaurant) // Convert JavaScript object to JSON
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(HTTP);
+            }
+            return response.json(); // Parse JSON response
+        })
+        .then(result => {
+            console.log("Success:", result); // Handle the response data
+        })
+        .catch(error => {
+            console.error("Error:", error); // Handle errors
+        });
+    }
+*/
+    console.log("Success")
+    if (error) {
+      console.error('Error creating users:', error);
+      return res.status(500).send('Error creating users');
+    }
+
+    res.json(data);
+  } catch (err){
+    console.error('Error in creating users:', err);
+    res.status(500).send('Server error');
+  }
+});
+
+
+
+
 module.exports = router;
