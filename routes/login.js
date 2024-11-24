@@ -52,6 +52,18 @@ router.post("/", async function (req, res, next) {
       }
       return res.status(200).json({customers});
     }
+    if(user_profiles.user_type === "restaurant"){
+      let { data: restaurants , error: r_error } = await supabase
+      .from('restaurants')
+      .select('*')
+          .eq('id', user_profiles.id) // Filter: 'id' equals 123
+          .single(); 
+      
+      if (r_error){
+        return res.status(400).json({ r_error: r_error.message });
+      }
+      return res.status(200).json({restaurants});
+    }
 
     
     // // Send token and success message back to the client
