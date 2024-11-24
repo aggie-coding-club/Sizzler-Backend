@@ -36,6 +36,25 @@ The project runs with the expectation you have node installed and some form of a
    npm run dev
    ```
 
+<<<<<<< HEAD
+=======
+## Working On New Features
+
+   The only requirement is to work on new features in your own independent branch. Changes you make should not immediately interfere with other's work and should always be peer reviewed prior to merging changes into the main branch. To branch of from the main, simply run the following command:
+
+   ```bash
+   git checkout -b <new branch name>
+   ```
+
+   This command will create a branch of the project stemming from wherever you are currently located. Typically you should be branching from main. If you are not located in main, and wish to be, run the following command **BEFORE** checking out to a new branch.
+
+   ```bash
+   git checkout main
+   ```
+
+   Note that this command does not include the `-b` flag. The flag serves to let git now that you wish to create a new branch if that name does not already exist.
+
+>>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64
 ## .env Setup
 
 Correctly linking the backend and frontend will require correct .env setup.
@@ -61,7 +80,11 @@ Correctly linking the backend and frontend will require correct .env setup.
 
 2. Add environment variables to .env
 
+<<<<<<< HEAD
    Replace `<Supabase Secret Key>` with the database key (provided to you privately). Replace `<Your WiFi IP>` with your local WiFi IP. If you are using the TAMU WiFi, then leave the option blank as `EXPO_PUBLIC_WIFI_HOST=`.
+=======
+   Replace `<Supabase Secret Key>` with the database key (provided to you privately). Replace `<Your WiFi IP>` with your WiFi IP. Local host should only be used if you are testing the frontend via the web version and it is also configured to use localhost for the backend api calls. Once the IP is configured once, you should not need to modify the `.env` again.
+>>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64
 
    If for whatever reason the frontend port changes, change the `EXPO_PORT` variable accordingly.
 
@@ -74,11 +97,19 @@ Correctly linking the backend and frontend will require correct .env setup.
 
    EXPO_LOCALHOST_URL=http://localhost:8081
    EXPO_PORT=8081
+<<<<<<< HEAD
    TAMU_WIFI_HOST=10.247.6.151
    WIFI_HOST=<Your Local WiFi IP>
    ```
 
 3. Get local WiFi IP
+=======
+   LOCAL_HOST=localhost
+   WIFI_HOST=<Your WiFi IP>
+   ```
+
+3. Get WiFi IP
+>>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64
 
    - **Windows 10:**
      1. `Command Prompt`
