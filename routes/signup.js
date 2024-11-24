@@ -19,14 +19,9 @@ router.post("/", async function (req, res, next) {
       if (error) {
         return res.status(400).json({ error: error.message });
       }
-      // // If successful, generate a JWT token for user authorization
-      // const token = jwt.sign(
-      //   { id: data.user.id, email: data.user.email },
-      //   JWT_SECRET,
-      //   { expiresIn: '1h' } // Token expires in 1 hour
-      // );
-      
-      // later, delete this code and replace it with a call to the create in users when everything is merged into main
+
+      const { backend_url } = require('./app');
+
       const info = {
         accountType: accountType,
         email: email,
@@ -39,7 +34,7 @@ router.post("/", async function (req, res, next) {
         city: city,
         ID: data.user.id
       };
-      fetch("http://localhost:3000/users/create", {
+      fetch(`${backend_url}/users/create`, {
         method: "POST", // HTTP method
         headers: {
             "Content-Type": "application/json" // Inform the backend of the data format
@@ -63,10 +58,8 @@ router.post("/", async function (req, res, next) {
       res.status(200).json({
         success: true,
         message: "Sign Up successful!",
-        //token: token, // Include JWT token
         user: data.user
       });
-      //res.status(200).json({ message: 'Login successful! Check your email for verification.' });
     } catch (error) {
       res.status(500).json({ error: 'An error occurred during sign up' });
     }

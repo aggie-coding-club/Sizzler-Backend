@@ -7,7 +7,6 @@ router.get("/read/", async function (req, res, next) {
 	try {
 		// Query the "posts" table
 		const { data, error } = await supabase.from("posts").select("*");
-<<<<<<< HEAD
 
 		// Handle errors
 		if (error) {
@@ -17,45 +16,12 @@ router.get("/read/", async function (req, res, next) {
 
 		// Console log all posts
 		console.info("Posts:", data);
-=======
 		if (error) {
 			console.error("Error fetching posts:", error);
 			return res.status(500).send("Error fetching posts");
 		}
 
 		// Console log all posts
-		console.log("Posts:", data);
->>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64
-
-		// Send the posts as a response
-		res.json(data);
-	} catch (err) {
-		console.error("Error in fetching posts:", err);
-		res.status(500).send("Server error");
-	}
-});
-
-<<<<<<< HEAD
-=======
-// Read by timestamp
-router.get("/readbytimestamp", async function (req, res, next) {
-	try {
-		// Query the "posts" table
-		const { data, error } = await supabase
-			.from("posts")
-			.select("*")
-			.order("created_at", { ascending: false });
-		// let { data: posts, error } = await supabase
-		//   .from('posts')
-		//   .select('id');
-		// Handle errors
-		if (error) {
-			console.error("Error fetching posts:", error);
-			return res.status(500).send("Error fetching posts");
-		}
-
-		// Console log all posts
-		//data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 		console.log("Posts:", data);
 
 		// Send the posts as a response
@@ -94,7 +60,35 @@ router.get("/readbytimestamp", async function (req, res, next) {
 		res.status(500).send("Server error");
 	}
 });
->>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64
+
+// Read by timestamp
+router.get("/readbytimestamp", async function (req, res, next) {
+	try {
+		// Query the "posts" table
+		const { data, error } = await supabase
+			.from("posts")
+			.select("*")
+			.order("created_at", { ascending: false });
+		// let { data: posts, error } = await supabase
+		//   .from('posts')
+		//   .select('id');
+		// Handle errors
+		if (error) {
+			console.error("Error fetching posts:", error);
+			return res.status(500).send("Error fetching posts");
+		}
+
+		// Console log all posts
+		//data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+		console.log("Posts:", data);
+
+		// Send the posts as a response
+		res.json(data);
+	} catch (err) {
+		console.error("Error in fetching posts:", err);
+		res.status(500).send("Server error");
+	}
+});
 // Read by Post ID
 router.get("/read/post/:post_id", async function (req, res, next) {
 	try {
@@ -106,21 +100,15 @@ router.get("/read/post/:post_id", async function (req, res, next) {
 			.select("*")
 			.eq("id", post_id);
 
-<<<<<<< HEAD
 		// Handle errors
-=======
->>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64
 		if (error) {
 			console.error("Error fetching posts:", error);
 			return res.status(500).send("Error fetching posts");
 		}
 
 		// Console log all posts
-<<<<<<< HEAD
 		console.info("Posts:", data);
-=======
 		console.log("Posts:", data);
->>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64
 
 		// Send the posts as a response
 		res.json(data);
@@ -141,21 +129,15 @@ router.get("/read/user/:user_id", async function (req, res, next) {
 			.select("*")
 			.eq("user_id", user_id);
 
-<<<<<<< HEAD
 		// Handle errors
-=======
->>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64
 		if (error) {
 			console.error("Error fetching posts:", error);
 			return res.status(500).send("Error fetching posts");
 		}
 
 		// Console log all posts
-<<<<<<< HEAD
 		console.info("Posts:", data);
-=======
 		console.log("Posts:", data);
->>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64
 
 		// Send the posts as a response
 		res.json(data);
@@ -239,8 +221,4 @@ router.delete("/delete/", async function (req, res, next) {
 	}
 });
 
-<<<<<<< HEAD
 module.exports = router;
-=======
-module.exports = router;
->>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64

@@ -3,7 +3,6 @@ var router = express.Router();
 var supabase = require("../supabase");
 
 // Create
-<<<<<<< HEAD
 
 // Read
 router.get("/read/", async function (req, res, next) {
@@ -35,7 +34,6 @@ router.get("/read/", async function (req, res, next) {
 
 
 module.exports = router;
-=======
 router.post("/create/", async function (req, res, next) {
 	try {
 		// create
@@ -217,4 +215,3 @@ router.delete("/delete/", async function (req, res, next) {
 });
 
 module.exports = router;
->>>>>>> 379f3407307f8e95641148c1abe8b90a2d00cd64

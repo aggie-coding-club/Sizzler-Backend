@@ -85,13 +85,14 @@ router.get("/read/:FName/:LName", async function (req, res, next) {
 router.post("/create/", async function (req, res, next) {
   try {
     // create
-    const {userID, FName, LName} = req.body;
+    const {userID, FName, LName, username} = req.body;
 
     const { data, error } = await supabase
       .from('customers') 
       .insert([{id : userID,
       first_name : FName,
-      last_name : LName}])
+      last_name : LName,
+      username: username}])
       .select()
     
     console.log("Success")

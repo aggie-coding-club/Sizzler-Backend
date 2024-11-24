@@ -33,7 +33,6 @@ router.post("/create/", async function (req, res, next) {
   try {
     // create
     const {accountType, email, firstName, lastName, username, resName, street, city, state, ID} = req.body;
-    // USE SUPABASE SIGN UP API TO CREATE AN AUTH.USER THEN CREATE A USER PROFILE
     console.log(accountType);
     const { data, error } = await supabase
       .from('user_profiles') 
@@ -41,37 +40,64 @@ router.post("/create/", async function (req, res, next) {
               user_type: accountType,
               email: email}])
       .select();
-    /*
     const restaurant = {
-      userID: d[0].id,
+      userID: ID,
       restaurantName: resName,
       streetAddress: street,
       City: city,
       State: state
-    }; */
+    };
+    const customer = {
+      id: ID,
+      FName: firstName,
+      LName: lastName,
+      username: username
+    };
+    const { backend_url } = require('./app');
+
     if (accountType === "customer"){
-      // IN THE FUTURE CHANGE THIS TO CALL CUSTOMERS ENDPOINT
-      const {d, e} = await supabase
-      .from("customers")
-      .insert({id : ID,
-        first_name: firstName,
-        last_name: lastName,
-        username: username
-      })
-      .select();
+      fetch(`${backend_url}/customers/create`, {
+        method: "POST", // HTTP method
+        headers: {
+            "Content-Type": "application/json" // Inform the backend of the data format
+        },
+        body: JSON.stringify(customer) // Convert JavaScript object to JSON
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("HTTP Error");
+            }
+            return response.json(); // Parse JSON response
+        })
+        .then(result => {
+            console.log("Success:", result); // Handle the response data
+        })
+        .catch(error => {
+            console.error("Error:", error); // Handle errors
+        });
       
     } else {
       // IN THE FUTURE CHANGE THIS TO CALL RESTAURANTS ENDPOINT
-      
-      const {d1, e1} = await supabase
-        .from("restaurants")
-        .insert([{id: ID,
-          restaurant_name: resName,
-          street_address: street,
-          city: city,
-          state: state,
-        }])
-        .select(); 
+      fetch(`${backend_url}/restaurants/create`, {
+        method: "POST", // HTTP method
+        headers: {
+            "Content-Type": "application/json" // Inform the backend of the data format
+        },
+        body: JSON.stringify(restaurant) // Convert JavaScript object to JSON
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("HTTP Error");
+            }
+            return response.json(); // Parse JSON response
+        })
+        .then(result => {
+            console.log("Success:", result); // Handle the response data
+        })
+        .catch(error => {
+            console.error("Error:", error); // Handle errors
+        });
+
 
     }
     console.log("Success")
