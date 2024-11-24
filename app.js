@@ -1,6 +1,20 @@
 require("dotenv").config();
 
 const express = require("express");
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+var cors = require("cors"); // Import the cors package
+
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
+
+var tagsRouter = require("./routes/tags");
+var postsRouter = require("./routes/posts");
+var commentsRouter = require("./routes/comments");
+var customersRouter = require("./routes/customers");
+var restaurantsRouter = require("./routes/restaurants");
 
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -40,6 +54,9 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter);
+app.use("/tags", tagsRouter);
+app.use("/customers", customersRouter);
+app.use("/restaurants", restaurantsRouter)
 
 const port = process.env.BACKEND_PORT;
 const BACKEND_URL = `http://${host}:${port}`;
