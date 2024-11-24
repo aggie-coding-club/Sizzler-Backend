@@ -6,11 +6,12 @@ var cors = require("cors"); // Import the cors package
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+
+var tagsRouter = require("./routes/tags");
 var postsRouter = require("./routes/posts");
 var commentsRouter = require("./routes/comments");
 var customersRouter = require("./routes/customers");
 var restaurantsRouter = require("./routes/restaurants");
-
 
 var app = express();
 
@@ -26,9 +27,9 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter);
+app.use("/tags", tagsRouter);
 app.use("/customers", customersRouter);
 app.use("/restaurants", restaurantsRouter)
-
 
 const port = 3000;
 app.listen(port, () => {
