@@ -9,10 +9,6 @@ router.get("/getAll", async function (req, res, next) {
 	try {
 		// Query the "posts" table
 		const { data, error } = await supabase.from("posts").select("*");
-		if (error) {
-			console.error("Error fetching posts:", error);
-			return res.status(500).send("Error fetching posts");
-		}
 
 		// Console log all posts
 		console.log("Posts:", data);
@@ -26,21 +22,24 @@ router.get("/getAll", async function (req, res, next) {
 });
 
 /**
- * 
+ *
  */
 router.get("/getUserPosts", async function (req, res, next) {
 	try {
-		const { posts, postsError } = await supabase.from("posts").select("*").order("created_at", { ascending: false });
-		const { users, userError } = await supabase.from("posts").select("*").order("created_at", { ascending: false });
-		const userPosts = posts.map((post, index) => 
-			users.find(item => item.id === post.id)
+		const { posts, postsError } = await supabase
+			.from("posts")
+			.select("*")
+			.order("created_at", { ascending: false });
+		const { users, userError } = await supabase
+			.from("posts")
+			.select("*")
+			.order("created_at", { ascending: false });
+		const userPosts = posts.map((post, index) =>
+			users.find((item) => item.id === post.id)
 		);
 		console.log(userPosts);
-
-	} catch (err) {
-
-	}
-})
+	} catch (err) {}
+});
 
 /**
  * Get list of posts sorted by timestamp descending
@@ -62,8 +61,7 @@ router.get("/readbytimestamp", async function (req, res, next) {
 		}
 
 		// Console log all posts
-		//data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-		console.log("Posts:", data);
+		console.info("Posts:", data);
 
 		// Send the posts as a response
 		res.json(data);
@@ -86,13 +84,14 @@ router.get("/read/post/:post_id", async function (req, res, next) {
 			.select("*")
 			.eq("id", post_id);
 
+		// Handle errors
 		if (error) {
 			console.error("Error fetching posts:", error);
 			return res.status(500).send("Error fetching posts");
 		}
 
 		// Console log all posts
-		console.log("Posts:", data);
+		console.info("Posts:", data);
 
 		// Send the posts as a response
 		res.json(data);
@@ -115,13 +114,14 @@ router.get("/read/user/:user_id", async function (req, res, next) {
 			.select("*")
 			.eq("user_id", user_id);
 
+		// Handle errors
 		if (error) {
 			console.error("Error fetching posts:", error);
 			return res.status(500).send("Error fetching posts");
 		}
 
 		// Console log all posts
-		console.log("Posts:", data);
+		console.info("Posts:", data);
 
 		// Send the posts as a response
 		res.json(data);
