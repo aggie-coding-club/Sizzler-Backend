@@ -2,8 +2,10 @@ var express = require("express");
 var router = express.Router();
 var supabase = require("../supabase");
 
-// Read
-router.get("/read/", async function (req, res, next) {
+/**
+ * Get list of all posts
+ */
+router.get("/getAll", async function (req, res, next) {
 	try {
 		// Query the "posts" table
 		const { data, error } = await supabase.from("posts").select("*");
@@ -23,7 +25,26 @@ router.get("/read/", async function (req, res, next) {
 	}
 });
 
-// Read by timestamp
+/**
+ * 
+ */
+router.get("/getUserPosts", async function (req, res, next) {
+	try {
+		const { posts, postsError } = await supabase.from("posts").select("*").order("created_at", { ascending: false });
+		const { users, userError } = await supabase.from("posts").select("*").order("created_at", { ascending: false });
+		const userPosts = posts.map((post, index) => 
+			users.find(item => item.id === post.id)
+		);
+		console.log(userPosts);
+
+	} catch (err) {
+
+	}
+})
+
+/**
+ * Get list of posts sorted by timestamp descending
+ */
 router.get("/readbytimestamp", async function (req, res, next) {
 	try {
 		// Query the "posts" table
@@ -52,7 +73,9 @@ router.get("/readbytimestamp", async function (req, res, next) {
 	}
 });
 
-// Read by Post ID
+/**
+ * Get post with post_id
+ */
 router.get("/read/post/:post_id", async function (req, res, next) {
 	try {
 		const post_id = req.params.post_id;
@@ -79,7 +102,9 @@ router.get("/read/post/:post_id", async function (req, res, next) {
 	}
 });
 
-// Read by User ID
+/**
+ * Get post with user_id
+ */
 router.get("/read/user/:user_id", async function (req, res, next) {
 	try {
 		const user_id = req.params.user_id;
@@ -106,7 +131,9 @@ router.get("/read/user/:user_id", async function (req, res, next) {
 	}
 });
 
-// Create
+/**
+ * Create new post
+ */
 router.post("/create/", async function (req, res, next) {
 	try {
 		// create
@@ -136,7 +163,9 @@ router.post("/create/", async function (req, res, next) {
 	}
 });
 
-// Update
+/**
+ * Update post
+ */
 router.put("/update/", async function (req, res, next) {
 	try {
 		const { title, caption, media_links, id } = req.body;
@@ -162,7 +191,9 @@ router.put("/update/", async function (req, res, next) {
 	}
 });
 
-// Delete
+/**
+ * Delete post
+ */
 router.delete("/delete/", async function (req, res, next) {
 	try {
 		const { id } = req.body;
