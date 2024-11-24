@@ -30,7 +30,9 @@ router.post("/", async function (req, res, next) {
     //   JWT_SECRET,
     //   { expiresIn: '1h' } // Token expires in 1 hour
     // );
-
+    // user id = data.id
+    
+    
     // // Send token and success message back to the client
     res.status(200).json({
       success: true,

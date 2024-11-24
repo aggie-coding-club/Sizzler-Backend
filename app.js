@@ -1,28 +1,38 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+require("dotenv").config();
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var postsRouter = require("./routes/posts")
-var loginRouter = require("./routes/login")
+const express = require("express");
 
-var app = express();
-var cors = require('cors');
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const cors = require("cors");
+const path = require("path");
 
-// var corsOptions = {
-//   origin: 'http://localhost:3000/',
-//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// }
-app.use(cors({
-  origin: '*', // Allow all origins; you may specify specific origins for security
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-// app.use(cors(corsOptions));
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+const postsRouter = require("./routes/posts");
+const commentsRouter = require("./routes/comments");
+const signupRouter = require("./routes/signup");
+const loginRouter = require("./routes/login");
 
 
+const app = express();
+
+const host = process.env.TAMU_WIFI_HOST;
+const EXPO_URL = `exp://${host}:${process.env.EXPO_PORT}`;
+
+const allowedOrigins = [process.env.EXPO_LOCALHOST_URL, EXPO_URL];
+
+app.use(
+	cors({
+		origin: (origin, callback) => {
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error("Request made from unauthorized URL"));
+			}
+		},
+	})
+);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -38,12 +48,14 @@ app.set('view engine', 'ejs'); // or 'ejs' if using EJS
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
+app.use("/comments", commentsRouter);
+app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 
-const port = 3000;
-app.listen(port, '10.244.212.164',  () => {
-  console.log(`Example app listening on port ${port}`);
+const port = process.env.BACKEND_PORT;
+const BACKEND_URL = `http://${host}:${port}`;
+app.listen(port, host, () => {
+	console.info(`Sizzler backend listening on ${BACKEND_URL}`);
 });
 
 module.exports = app;
-
