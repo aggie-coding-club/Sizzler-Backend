@@ -9,11 +9,6 @@ router.get("/read/", async function (req, res, next) {
       const { data, error } = await supabase
         .from('posts')
         .select('*'); 
-      
-      // let { data: posts, error } = await supabase
-      //   .from('posts')
-      //   .select('id');
-      // Handle errors
       if (error) {
         console.error('Error fetching posts:', error);
         return res.status(500).send('Error fetching posts');
@@ -30,6 +25,35 @@ router.get("/read/", async function (req, res, next) {
     }
 });
 
+
+// Read by timestamp
+router.get("/readbytimestamp", async function (req, res, next) {
+  try {
+    // Query the "posts" table
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false});
+    // let { data: posts, error } = await supabase
+    //   .from('posts')
+    //   .select('id');
+    // Handle errors
+    if (error) {
+      console.error('Error fetching posts:', error);
+      return res.status(500).send('Error fetching posts');
+    }
+
+    // Console log all posts
+    //data.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    console.log('Posts:', data);
+
+    // Send the posts as a response
+    res.json(data);
+  } catch (err) {
+    console.error('Error in fetching posts:', err);
+    res.status(500).send('Server error');
+  }
+});
 // Read by Post ID
 router.get("/read/post/:post_id", async function (req, res, next) {
     try {
@@ -41,10 +65,6 @@ router.get("/read/post/:post_id", async function (req, res, next) {
         .select('*')
         .eq('id', post_id);
       
-      // let { data: posts, error } = await supabase
-      //   .from('posts')
-      //   .select('id');
-      // Handle errors
       if (error) {
         console.error('Error fetching posts:', error);
         return res.status(500).send('Error fetching posts');
@@ -72,10 +92,6 @@ router.get("/read/user/:user_id", async function (req, res, next) {
         .select('*')
         .eq('user_id', user_id);
       
-      // let { data: posts, error } = await supabase
-      //   .from('posts')
-      //   .select('id');
-      // Handle errors
       if (error) {
         console.error('Error fetching posts:', error);
         return res.status(500).send('Error fetching posts');
