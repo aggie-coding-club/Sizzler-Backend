@@ -7,15 +7,6 @@ router.get("/read/", async function (req, res, next) {
 	try {
 		// Query the "posts" table
 		const { data, error } = await supabase.from("posts").select("*");
-
-		// Handle errors
-		if (error) {
-			console.error("Error fetching posts:", error);
-			return res.status(500).send("Error fetching posts");
-		}
-
-		// Console log all posts
-		console.info("Posts:", data);
 		if (error) {
 			console.error("Error fetching posts:", error);
 			return res.status(500).send("Error fetching posts");
@@ -107,7 +98,6 @@ router.get("/read/post/:post_id", async function (req, res, next) {
 		}
 
 		// Console log all posts
-		console.info("Posts:", data);
 		console.log("Posts:", data);
 
 		// Send the posts as a response

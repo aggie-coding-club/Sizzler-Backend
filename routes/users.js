@@ -106,11 +106,15 @@ router.post("/create/", async function (req, res, next) {
       return res.status(500).send('Error creating users');
     }
 
-    res.json(data);
-  } catch (err){
-    console.error('Error in creating users:', err);
-    res.status(500).send('Server error');
-  }
+		// Console log all posts
+		console.info("Users:", data);
+
+		// Send the posts as a response
+		res.json(data);
+	} catch (err) {
+		console.error("Error in fetching posts:", err);
+		res.status(500).send("Server error");
+	}
 });
 
 
