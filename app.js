@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+var cors = require("cors"); // Import the cors package
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -55,8 +56,8 @@ app.use("/restaurants", restaurantsRouter);
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 
-const port = 3000;
-export const BACKEND_URL = `http://${host}:${port}`;
+const port = process.env.BACKEND_PORT;
+const BACKEND_URL = `http://${host}:${port}`;
 app.listen(port, () => {
   console.log(`Sizzler app listening on port ${BACKEND_URL}`);
 });
