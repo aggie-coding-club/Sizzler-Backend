@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
@@ -38,13 +39,8 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, "public")));
-//test
-
-
-//app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, "views")));
-app.set('view engine', 'ejs'); // or 'ejs' if using EJS
+app.set("view engine", "ejs"); // or 'ejs' if using EJS
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
@@ -56,7 +52,7 @@ app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 
 const port = 3000;
-export const BACKEND_URL = `http://${host}:${port}`;
+const BACKEND_URL = `http://${host}:${port}`;
 app.listen(port, () => {
   console.log(`Sizzler app listening on port ${BACKEND_URL}`);
 });

@@ -1,11 +1,11 @@
-var express = require("express");
-var router = express.Router();
-var supabase = require("../supabase");
+const express = require("express");
+const router = express.Router();
+const supabase = require("../supabase");
 
 /**
  * Get list of all posts
  */
-router.get("/getAll", async function (req, res, next) {
+router.get("/getPosts", async function (req, res, next) {
 	try {
 		// Query the "posts" table
 		const { data, error } = await supabase.from("posts").select("*");
@@ -22,23 +22,46 @@ router.get("/getAll", async function (req, res, next) {
 });
 
 /**
- *
+ * Get list of all posts formatted for the dashboard page
  */
-router.get("/getUserPosts", async function (req, res, next) {
+router.get("/getDashboardPosts", async function (req, res, next) {
 	try {
-		const { posts, postsError } = await supabase
+		const { data: posts, error: postsError } = await supabase
 			.from("posts")
 			.select("*")
 			.order("created_at", { ascending: false });
-		const { users, userError } = await supabase
-			.from("posts")
-			.select("*")
-			.order("created_at", { ascending: false });
-		const userPosts = posts.map((post, index) =>
-			users.find((item) => item.id === post.id)
-		);
-		console.log(userPosts);
-	} catch (err) {}
+		const { data: restaurants, error: restaurantsError } = await supabase
+			.from("restaurants")
+			.select("*");
+
+		if (postsError) {
+			console.error("Error getting posts:", postsError);
+			return res.status(500).send("Error fetching posts");
+		} else if (restaurantsError) {
+			Í;
+			console.error("Error fetching users:", restaurantsError);
+			return res.status(500).send("Error fetching users");
+		}
+
+		const dashboardPosts = posts.map((post, index) => {
+			const restaurant = restaurants.find((item) => item.id === post.user_id);
+			const restaurantPost = {
+				user: restaurant.restaurant_name,
+				userProfile: "https://via.placeholder.com/30x30",
+				title: post.title,
+				caption: post.caption,
+				mediaLinks: post.media_links || [],
+				createdAt: post.created_at,
+			};
+			return restaurantPost;
+		});
+
+		console.log(dashboardPosts);
+		res.json(dashboardPosts);
+	} catch (err) {
+		console.error("Error in fetching posts:", err);
+		res.status(500).send("Server error");
+	}
 });
 
 /**
@@ -51,10 +74,6 @@ router.get("/readbytimestamp", async function (req, res, next) {
 			.from("posts")
 			.select("*")
 			.order("created_at", { ascending: false });
-		// let { data: posts, error } = await supabase
-		//   .from('posts')
-		//   .select('id');
-		// Handle errors
 		if (error) {
 			console.error("Error fetching posts:", error);
 			return res.status(500).send("Error fetching posts");

@@ -11,25 +11,12 @@ router.get("/", async function (req, res, next) {
 		// const { data, error } = await supabase
 		//   .from('user_profiles')
 		//   .select('*');
-		let { data, error } = await supabase.from("user_profiles").select("*");
+		const { data, error } = await supabase.from("user_profiles").select("*");
 		// Handle errors
 		if (error) {
 			console.error("Error fetching users:", error);
 			return res.status(500).send("Error fetching users");
 		}
-		// Query the "posts" table
-		// const { data, error } = await supabase
-		//   .from('user_profiles')
-		//   .select('*');
-		let { data, error } = await supabase.from("user_profiles").select("*");
-		// Handle errors
-		if (error) {
-			console.error("Error fetching users:", error);
-			return res.status(500).send("Error fetching users");
-		}
-
-		// Console log all posts
-		console.info("Users:", data);
 		// Console log all posts
 		console.info("Users:", data);
 
